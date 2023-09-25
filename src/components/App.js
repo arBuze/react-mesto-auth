@@ -46,7 +46,6 @@ function App() {
   }, [])
 
   function handleTokenCheck() {
-    console.log(loggedIn, 'asas');
     if(localStorage.getItem('jwt')) {
       const jwt = localStorage.getItem('jwt');
       auth.checkToken(jwt)
