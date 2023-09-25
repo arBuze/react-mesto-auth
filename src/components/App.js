@@ -16,8 +16,6 @@ import { api } from '../utils/Api';
 import { auth } from '../utils/AuthApi';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-
-
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -149,8 +147,10 @@ function App() {
       });
   }
 
+  /* для авторизации и регистрации */
   function handleLogin() {
     setLoggedIn(true);
+    handleTokenCheck();
   }
 
   function handleRegister() {

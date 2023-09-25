@@ -25,7 +25,6 @@ function Login(props) {
         if (data.token){
           setFormValue({username: '', password: ''});
           props.onLogin();
-          console.log('adaa');
           navigate('/', {replace: true});
         }
       })
