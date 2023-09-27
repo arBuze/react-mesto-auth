@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import '../index.css';
 import Header from './Header';
 import Main from './Main';
 import Register from './Register';
@@ -17,17 +18,17 @@ import { auth } from '../utils/AuthApi';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
-  const [isSuccessful, setIsSuccessful] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
-  const [selectedCardDelete, setSelectedCardDelete] = React.useState(null);
-  const [cards, setCards] = React.useState([]);
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [userEmail, setUserEmail] = React.useState('');
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedCardDelete, setSelectedCardDelete] = useState(null);
+  const [cards, setCards] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -147,9 +148,9 @@ function App() {
   }
 
   /* для авторизации и регистрации */
-  function handleLogin() {
+  function handleLogin(email) {
+    setUserEmail(email);
     setLoggedIn(true);
-    handleTokenCheck();
   }
 
   function handleRegister() {
@@ -170,24 +171,19 @@ function App() {
 
   return (
     <div className="page__content">
+      <Header email={userEmail} onSignOut={handleSignOut} />
       <CurrentUserContext.Provider value={currentUser}>
         <Routes>
           {/* для авторизации */}
           <Route path="/sign-in"
             element={
-              <>
-                <Header route="/sign-up" linkName="Регистрация" />
-                <Login onLogin={handleLogin} onFailure={handleFailure} />
-              </>
+              <Login onLogin={handleLogin} onFailure={handleFailure} />
             }
           />
           {/* для регистрации */}
           <Route path="/sign-up"
             element={
-              <>
-                <Header route="/sign-in" linkName="Войти" />
-                <Register onRegister={handleRegister} onFailure={handleFailure} />
-              </>
+              <Register onRegister={handleRegister} onFailure={handleFailure} />
             }
           />
           {/* основная страница */}

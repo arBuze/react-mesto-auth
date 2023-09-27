@@ -1,10 +1,10 @@
-import React from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "./Form";
 import { auth } from "../utils/AuthApi";
 
 function Register(props) {
-  const [formValue, setFormValue] = React.useState({email:'', password: ''});
+  const [formValue, setFormValue] = useState({email:'', password: ''});
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -21,12 +21,17 @@ function Register(props) {
       return;
     }
     auth.register(formValue.email, formValue.password)
-      .then(() => {
+      .then((res) => {
+        if(res.error) {
+          props.onFailure();
+          console.log(res.error);
+          return;
+        }
         props.onRegister();
         navigate('/sign-in', {replace: true});
       })
       .catch(err => {
-        props.onFailure();
+        props.onFailure(); /* если регистрировать на тот же email, catch не выполняется */
         console.log(err);
       });
   }

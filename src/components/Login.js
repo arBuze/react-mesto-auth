@@ -1,10 +1,10 @@
-import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "./Form";
 import { auth } from "../utils/AuthApi";
 
 function Login(props) {
-  const [formValue, setFormValue] = React.useState({email:'', password: ''});
+  const [formValue, setFormValue] = useState({email:'', password: ''});
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -23,8 +23,8 @@ function Login(props) {
     auth.authorize(formValue.email, formValue.password)
       .then(data => {
         if (data.token){
-          setFormValue({username: '', password: ''});
-          props.onLogin();
+          props.onLogin(formValue.email);
+          setFormValue({email: '', password: ''});
           navigate('/', {replace: true});
         }
       })
